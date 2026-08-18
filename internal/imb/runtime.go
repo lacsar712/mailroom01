@@ -10,19 +10,17 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"example.com/mailroom/internal/util/precopy"
 )
 
 var ErrMailClass = errors.New("mail class denied")
 
 // CopyIMBPrefix returns an independent prefix of the IMb payload bytes.
+// The result does not share a backing array with payload, so mutating it
+// cannot pollute the inbound barcode source buffer.
 func CopyIMBPrefix(payload []byte, n int) []byte {
-	if n < 0 {
-		n = 0
-	}
-	if n > len(payload) {
-		n = len(payload)
-	}
-	return payload[:n]
+	return precopy.ClonePrefix(payload, n)
 }
 
 type TrayIndex struct {
