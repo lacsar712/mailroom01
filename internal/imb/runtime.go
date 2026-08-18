@@ -22,7 +22,9 @@ func CopyIMBPrefix(payload []byte, n int) []byte {
 	if n > len(payload) {
 		n = len(payload)
 	}
-	return payload[:n]
+	out := make([]byte, n)
+	copy(out, payload[:n])
+	return out
 }
 
 type TrayIndex struct {
